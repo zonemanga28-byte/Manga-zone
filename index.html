@@ -311,6 +311,74 @@ footer{
   padding:12px 14px;font-size:12.5px;line-height:1.8;margin-bottom:16px;
 }
 .admin-lock{text-align:center;padding:30px 10px;}
+
+/* ===== AD POPUP (PUBG-style interstitial) ===== */
+.ad-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(10,10,10,.78);
+  display:none;
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.ad-overlay.show{display:flex;}
+.ad-box{
+  position:relative;
+  background:var(--paper);
+  border:3px solid var(--ink);
+  border-radius:var(--radius);
+  width:100%;max-width:420px;
+  max-height:88vh;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  animation:adPop .28s ease;
+}
+@keyframes adPop{
+  from{opacity:0;transform:scale(.9);}
+  to{opacity:1;transform:scale(1);}
+}
+.ad-close{
+  position:absolute;top:10px;left:10px;z-index:5;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(0,0,0,.65);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:800;
+  border:2px solid rgba(255,255,255,.5);
+  transition:background .15s ease, transform .15s ease;
+}
+.ad-close:hover{background:var(--hanko);}
+.ad-close.locked{
+  background:rgba(0,0,0,.4);
+  cursor:default;
+}
+.ad-timer{
+  position:absolute;top:10px;left:10px;z-index:4;
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;
+  background:rgba(0,0,0,.55);
+  border:2px solid rgba(255,255,255,.5);
+}
+.ad-img-wrap{
+  width:100%;aspect-ratio:1/1;
+  background:linear-gradient(150deg,var(--indigo),var(--indigo-deep));
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.ad-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.ad-body{padding:20px 22px 22px;}
+.ad-body h3{font-size:19px;color:var(--indigo-deep);margin-bottom:8px;}
+.ad-body p{font-size:14.5px;color:var(--ink-soft);white-space:pre-line;}
+.ad-cta{
+  display:inline-block;margin-top:16px;
+  background:var(--hanko);color:#fff;padding:12px 22px;
+  font-weight:800;border-radius:var(--radius);
+  box-shadow:4px 4px 0 var(--ink);
+}
+.ad-badge{
+  position:absolute;top:10px;right:10px;z-index:4;
+  background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;font-weight:700;
+  padding:4px 9px;border-radius:20px;letter-spacing:.05em;
+}
 </style>
 </head>
 <body>
@@ -416,6 +484,20 @@ footer{
   </div>
 </div>
 
+<!-- Ad Popup (interstitial, PUBG-style) -->
+<div class="ad-overlay" id="adOverlay">
+  <div class="ad-box" id="adBox">
+    <span class="ad-badge">إعلان</span>
+    <button class="ad-close" id="adCloseBtn" onclick="closeAdPopup()">×</button>
+    <div class="ad-img-wrap" id="adImgWrap"></div>
+    <div class="ad-body">
+      <h3 id="adTitle"></h3>
+      <p id="adText"></p>
+      <a href="#" id="adCtaBtn" class="ad-cta" style="display:none;" target="_blank" rel="noopener">اعرف أكتر</a>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ==========================================================
    إعدادات المتجر — عدّل هنا لو حبيت تضيف تصنيف جديد
@@ -470,6 +552,21 @@ const products = {
     {id:'b5', title:'شنطة يد انمي — Chainsaw Edition', meta:'خامة جلد صناعي', price:340, img:''},
     {id:'b6', title:'كوتشينة/بينسل باج انمي', meta:'خامة قماش · سحاب معدني', price:150, img:''},
   ]
+};
+
+/* ==========================================================
+   إعدادات إعلان البوب-أب (زي إعلانات PUBG)
+   بيتحكم فيه من لوحة التحكم: تفعيل/تعطيل، عنوان، نص، صورة،
+   رابط الزرار، وثواني القفل قبل ما زرار الإكس يظهر
+   ========================================================== */
+let adConfig = {
+  enabled: true,
+  title: 'عرض خاص 🔥',
+  text: 'خصم 15% على كل المانجا لفترة محدودة!\nاستخدم كود: MANGA15 عند التواصل معانا.',
+  img: '',
+  ctaText: 'تصفح العروض',
+  ctaLink: '#manga',
+  lockSeconds: 3
 };
 
 /* ==========================================================
@@ -601,6 +698,7 @@ function findProduct(id){
    حتى لو المتصفح اتقفل أو الموقع اتعمله ريفريش أو زار حد تاني
    ========================================================== */
 const STORAGE_KEY = 'manga-zone-products-v1';
+const AD_STORAGE_KEY = 'manga-zone-ad-v1';
 
 async function loadStoredProducts(){
   try{
@@ -635,12 +733,38 @@ async function saveProductsOnline(){
   }
 }
 
+async function loadStoredAd(){
+  try{
+    const result = await window.storage.get(AD_STORAGE_KEY, true);
+    if(result && result.value){
+      const saved = JSON.parse(result.value);
+      adConfig = {...adConfig, ...saved};
+    }
+  }catch(err){
+    console.log('لا يوجد إعدادات إعلان محفوظة بعد، هيتم استخدام القيم الافتراضية.', err);
+  }
+}
+
+async function saveAdOnline(){
+  try{
+    const result = await window.storage.set(AD_STORAGE_KEY, JSON.stringify(adConfig), true);
+    if(!result){
+      alert('حصلت مشكلة في حفظ الإعلان، حاول تاني.');
+    }
+  }catch(err){
+    console.error('ad storage save error', err);
+    alert('حصلت مشكلة في حفظ الإعلان، حاول تاني.');
+  }
+}
+
 async function initStore(){
   await loadStoredProducts();
+  await loadStoredAd();
   buildNav();
   buildSections();
   renderCart();
   logVisit(); // تسجيل الزيارة على قاعدة البيانات (مش بننتظرها عشان الموقع يفتح بسرعة)
+  maybeShowAdPopup();
 }
 initStore();
 
@@ -814,6 +938,74 @@ function confirmViaWhatsapp(total){
 }
 
 /* ==========================================================
+   إعلان البوب-أب — يظهر أول ما يفتح الموقع (لو مفعّل)
+   زي إعلانات PUBG: صورة/نص + زرار إكس بيظهر بعد ثواني قفل
+   ========================================================== */
+let adCloseTimer = null;
+
+function maybeShowAdPopup(){
+  if(!adConfig.enabled) return;
+  showAdPopup();
+}
+
+function showAdPopup(){
+  document.getElementById('adTitle').textContent = adConfig.title || '';
+  document.getElementById('adText').textContent = adConfig.text || '';
+
+  const imgWrap = document.getElementById('adImgWrap');
+  if(adConfig.img){
+    imgWrap.style.display = 'flex';
+    imgWrap.innerHTML = `<img src="${adConfig.img}" alt="إعلان">`;
+  } else {
+    imgWrap.style.display = 'none';
+    imgWrap.innerHTML = '';
+  }
+
+  const cta = document.getElementById('adCtaBtn');
+  if(adConfig.ctaText && adConfig.ctaLink){
+    cta.textContent = adConfig.ctaText;
+    cta.href = adConfig.ctaLink;
+    cta.style.display = 'inline-block';
+    cta.onclick = ()=>{ setTimeout(closeAdPopup, 200); };
+  } else {
+    cta.style.display = 'none';
+  }
+
+  const closeBtn = document.getElementById('adCloseBtn');
+  const lockSeconds = Math.max(0, parseInt(adConfig.lockSeconds) || 0);
+
+  document.getElementById('adOverlay').classList.add('show');
+
+  if(lockSeconds > 0){
+    let remaining = lockSeconds;
+    closeBtn.classList.add('locked');
+    closeBtn.textContent = remaining;
+    closeBtn.onclick = null;
+    clearInterval(adCloseTimer);
+    adCloseTimer = setInterval(()=>{
+      remaining--;
+      if(remaining <= 0){
+        clearInterval(adCloseTimer);
+        closeBtn.classList.remove('locked');
+        closeBtn.textContent = '×';
+        closeBtn.onclick = closeAdPopup;
+      } else {
+        closeBtn.textContent = remaining;
+      }
+    }, 1000);
+  } else {
+    closeBtn.classList.remove('locked');
+    closeBtn.textContent = '×';
+    closeBtn.onclick = closeAdPopup;
+  }
+}
+
+function closeAdPopup(){
+  document.getElementById('adOverlay').classList.remove('show');
+  clearInterval(adCloseTimer);
+}
+
+/* ==========================================================
    لوحة التحكم — أي تعديل هنا بيتحفظ أونلاين فعليًا
    (باستخدام نظام تخزين المتجر) وبيظهر لكل زوار الموقع،
    وبيفضل موجود حتى لو تم عمل ريفريش أو إغلاق المتصفح.
@@ -861,12 +1053,54 @@ function tryUnlock(){
 }
 
 const pendingImages = {};
+let pendingAdImage = null;
 
 function renderAdminBody(){
   let html = `
     <div class="admin-note">
       عدّل السعر، ودوس على الصورة (أو زرار اختيار صورة) عشان ترفع صورة المنتج من جهازك مباشرة،
       وبعدين ادوس "حفظ" — كل حاجة بتتخزن أونلاين فورًا وتفضل ثابتة لكل الزوار.
+    </div>
+
+    <div class="admin-cat-title">إعلان البوب-أب (يظهر لما حد يفتح الموقع)</div>
+    <div class="field" style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+      <input type="checkbox" id="adEnabled" style="width:auto;" ${adConfig.enabled ? 'checked' : ''}>
+      <label for="adEnabled" style="margin:0;">تفعيل ظهور الإعلان أول ما حد يفتح الموقع</label>
+    </div>
+    <div class="field">
+      <label>عنوان الإعلان</label>
+      <input type="text" id="adTitleInput" value="${(adConfig.title||'').replace(/"/g,'&quot;')}" placeholder="مثال: عرض خاص 🔥">
+    </div>
+    <div class="field">
+      <label>نص الإعلان</label>
+      <textarea id="adTextInput" rows="3" placeholder="تفاصيل العرض...">${adConfig.text||''}</textarea>
+    </div>
+    <div class="field">
+      <label>صورة الإعلان (اختياري)</label>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <img id="adThumb" src="${adConfig.img||''}" style="width:70px;height:70px;border-radius:var(--radius);border:1.5px solid var(--ink);object-fit:cover;background:var(--paper-2);${adConfig.img ? '' : 'opacity:.2;'}">
+        <label class="step-btn" style="width:auto;padding:9px 16px;cursor:pointer;display:inline-block;">
+          اختار صورة
+          <input type="file" accept="image/*" style="display:none" onchange="handleAdImageSelect(this)">
+        </label>
+        <span id="adImgClear" style="font-size:12px;color:var(--hanko);text-decoration:underline;cursor:pointer;">مسح الصورة</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>نص زرار الإعلان (اختياري)</label>
+      <input type="text" id="adCtaTextInput" value="${(adConfig.ctaText||'').replace(/"/g,'&quot;')}" placeholder="مثال: تصفح العروض">
+    </div>
+    <div class="field">
+      <label>رابط زرار الإعلان (اختياري، مثال: #manga)</label>
+      <input type="text" id="adCtaLinkInput" value="${(adConfig.ctaLink||'').replace(/"/g,'&quot;')}" placeholder="#manga">
+    </div>
+    <div class="field">
+      <label>ثواني القفل قبل ظهور زرار الإغلاق (0 = يظهر فورًا)</label>
+      <input type="number" id="adLockInput" min="0" value="${adConfig.lockSeconds}">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:6px;">
+      <button class="admin-save-btn" style="padding:10px 18px;" onclick="saveAdConfig()">حفظ الإعلان</button>
+      <button class="admin-save-btn" style="padding:10px 18px;background:var(--ink-soft);" onclick="previewAd()">معاينة</button>
     </div>
   `;
   categoryMeta.forEach(cat => {
@@ -886,6 +1120,13 @@ function renderAdminBody(){
     });
   });
   document.getElementById('adminBody').innerHTML = html;
+
+  document.getElementById('adImgClear').addEventListener('click', ()=>{
+    pendingAdImage = '';
+    const thumb = document.getElementById('adThumb');
+    thumb.src = '';
+    thumb.style.opacity = .2;
+  });
 }
 
 function handleImageSelect(id, inputEl){
@@ -906,6 +1147,30 @@ function handleImageSelect(id, inputEl){
       const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
       pendingImages[id] = dataUrl;
       const thumb = document.getElementById('thumb-'+id);
+      if(thumb){ thumb.src = dataUrl; thumb.style.opacity = 1; }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleAdImageSelect(inputEl){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxWidth = 700;
+      const scale = Math.min(1, maxWidth / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      pendingAdImage = dataUrl;
+      const thumb = document.getElementById('adThumb');
       if(thumb){ thumb.src = dataUrl; thumb.style.opacity = 1; }
     };
     img.src = e.target.result;
@@ -949,6 +1214,57 @@ async function saveProduct(id){
 
   btn.textContent = 'اتحفظ ✓';
   setTimeout(()=>{ btn.textContent = oldText; }, 1500);
+}
+
+async function saveAdConfig(){
+  const wasEnabled = adConfig.enabled;
+
+  adConfig.enabled = document.getElementById('adEnabled').checked;
+  adConfig.title = document.getElementById('adTitleInput').value.trim();
+  adConfig.text = document.getElementById('adTextInput').value;
+  adConfig.ctaText = document.getElementById('adCtaTextInput').value.trim();
+  adConfig.ctaLink = document.getElementById('adCtaLinkInput').value.trim();
+  const lockVal = parseInt(document.getElementById('adLockInput').value);
+  adConfig.lockSeconds = isNaN(lockVal) ? 0 : Math.max(0, lockVal);
+
+  if(pendingAdImage !== null){
+    adConfig.img = pendingAdImage;
+    pendingAdImage = null;
+  }
+
+  const btn = event.target;
+  const oldText = btn.textContent;
+  btn.textContent = 'جاري الحفظ...';
+  await saveAdOnline();
+
+  logAdminChange({
+    action: 'update_ad_popup',
+    enabled: adConfig.enabled,
+    wasEnabled,
+    title: adConfig.title,
+    hasImage: !!adConfig.img,
+    lockSeconds: adConfig.lockSeconds
+  });
+
+  btn.textContent = 'اتحفظ ✓';
+  setTimeout(()=>{ btn.textContent = oldText; }, 1500);
+}
+
+function previewAd(){
+  // معاينة فورية بالقيم اللي في الفورم من غير ما تتحفظ لسه
+  const tempConfig = {
+    enabled: true,
+    title: document.getElementById('adTitleInput').value.trim(),
+    text: document.getElementById('adTextInput').value,
+    img: pendingAdImage !== null ? pendingAdImage : adConfig.img,
+    ctaText: document.getElementById('adCtaTextInput').value.trim(),
+    ctaLink: document.getElementById('adCtaLinkInput').value.trim(),
+    lockSeconds: parseInt(document.getElementById('adLockInput').value) || 0
+  };
+  const backup = adConfig;
+  adConfig = tempConfig;
+  showAdPopup();
+  adConfig = backup;
 }
 </script>
 </body>
