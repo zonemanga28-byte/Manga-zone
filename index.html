@@ -472,6 +472,54 @@ const products = {
   ]
 };
 
+/* ==========================================================
+   تسجيل الزيارات وتغييرات لوحة التحكم على Firebase Realtime DB
+   كل زيارة للموقع وكل تعديل من لوحة التحكم بيتسجل هنا تلقائي
+   ========================================================== */
+const FIREBASE_DB_URL = 'https://mangazone-b652c-default-rtdb.firebaseio.com';
+
+function getVisitorId(){
+  // معرف بسيط للزائر يفضل ثابت طول الجلسة (تاب المتصفح) بس مش مخزن دائم
+  if(!window.__mzVisitorId){
+    window.__mzVisitorId = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
+  }
+  return window.__mzVisitorId;
+}
+
+async function logVisit(){
+  try{
+    await fetch(`${FIREBASE_DB_URL}/visits.json`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        visitorId: getVisitorId(),
+        page: location.href,
+        referrer: document.referrer || null,
+        userAgent: navigator.userAgent,
+        language: navigator.language
+      })
+    });
+  }catch(err){
+    console.log('تعذر تسجيل الزيارة على قاعدة البيانات', err);
+  }
+}
+
+async function logAdminChange(entry){
+  try{
+    await fetch(`${FIREBASE_DB_URL}/adminChanges.json`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        ...entry
+      })
+    });
+  }catch(err){
+    console.log('تعذر تسجيل التغيير على قاعدة البيانات', err);
+  }
+}
+
 let cart = [];
 const gradients = [
   'linear-gradient(150deg,#223a5e,#152944)',
@@ -592,6 +640,7 @@ async function initStore(){
   buildNav();
   buildSections();
   renderCart();
+  logVisit(); // تسجيل الزيارة على قاعدة البيانات (مش بننتظرها عشان الموقع يفتح بسرعة)
 }
 initStore();
 
@@ -866,18 +915,38 @@ function handleImageSelect(id, inputEl){
 
 async function saveProduct(id){
   const p = findProduct(id);
+  const oldPrice = p.price;
+  const hadImageBefore = !!p.img;
+
   const newPrice = parseFloat(document.getElementById('price-'+id).value);
   if(!isNaN(newPrice)) p.price = newPrice;
+
+  const imageChanged = !!pendingImages[id];
   if(pendingImages[id]){
     p.img = pendingImages[id];
     delete pendingImages[id];
   }
+
   buildSections();
   renderCart();
   const btn = event.target;
   const oldText = btn.textContent;
   btn.textContent = 'جاري الحفظ...';
   await saveProductsOnline();
+
+  // تسجيل التعديل في قاعدة البيانات (سعر و/أو صورة)
+  logAdminChange({
+    action: 'update_product',
+    productId: id,
+    productTitle: p.title,
+    priceChanged: oldPrice !== p.price,
+    oldPrice,
+    newPrice: p.price,
+    imageChanged,
+    hadImageBefore,
+    hasImageNow: !!p.img
+  });
+
   btn.textContent = 'اتحفظ ✓';
   setTimeout(()=>{ btn.textContent = oldText; }, 1500);
 }
