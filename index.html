@@ -376,7 +376,7 @@ footer{
   <div class="foot-bottom">
     <span>© 2026 Manga Zone — جميع الحقوق محفوظة</span>
     <span>·</span>
-    <a href="#" class="admin-link" onclick="openAdmin();return false;">لوحة التحكم</a>
+    <!--<a href="#" class="admin-link" onclick="openAdmin();return false;">لوحة التحكم</a> -->
   </div>
 </footer>
 
@@ -435,36 +435,40 @@ const categoryMeta = [
    ========================================================== */
 const products = {
   manga: [
-    {id:'m1', title:'One Piece Vol. 1 (English)', meta:'VIZ Media · Paperback · 216 صفحة', price:220, img:''},
-    {id:'m2', title:'One Piece Vol. 50 (English)', meta:'VIZ Media · Paperback', price:220, img:''},
-    {id:'m3', title:'Naruto Vol. 20 (English)', meta:'VIZ Media · Paperback · 192 صفحة', price:220, img:''},
-    {id:'m4', title:'Naruto Vol. 43 (English)', meta:'VIZ Media · Paperback · 256 صفحة', price:220, img:''},
-    {id:'m5', title:'Attack on Titan Vol. 20 (English)', meta:'Kodansha Comics · Paperback · 192 صفحة', price:220, img:''},
-    {id:'m6', title:'Tokyo Revengers Vol. 17 (English)', meta:'Kodansha · Paperback · 192 صفحة', price:220, img:''},
-    {id:'m7', title:'Tokyo Revengers Vol. 19 (English)', meta:'Kodansha · Paperback', price:220, img:''},
-    {id:'m8', title:'One Piece Vol. 82 (English)', meta:'VIZ Media · Paperback · 216 صفحة', price:220, img:''},
+    {id:'m1', title:'One Piece Vol. 1 (English)', meta:'Eiichiro Oda · Paperback', price:350.00, img:''},
+    {id:'m2', title:'Naruto Vol. 1 (English)', meta:'Masashi Kishimoto · Paperback', price:299.99, img:''},
+    {id:'m3', title:'Attack on Titan Vol. 1 (English)', meta:'Hajime Isayama · Paperback', price:199.99, img:''},
+    {id:'m4', title:'Demon Slayer Vol. 1 (English)', meta:'Koyoharu Gotouge · Paperback', price:175.00, img:''},
+    {id:'m5', title:'Jujutsu Kaisen Vol. 1 (English)', meta:'Gege Akutami · Paperback', price:280.00, img:''},
+    {id:'m6', title:'My Hero Academia Vol. 1 (English)', meta:'Kohei Horikoshi · Paperback', price:290.00, img:''},
+    {id:'m7', title:'Chainsaw Man Vol. 1 (English)', meta:'Tatsuki Fujimoto · Paperback', price:195.00, img:''},
+    {id:'m8', title:'Death Note Vol. 1 (English)', meta:'Tsugumi Ohba · Paperback', price:200.00, img:''},
   ],
   figures: [
-    {id:'f1', title:'مجسم نير — Death Note', meta:'PVC عالية الجودة', price:550, img:''},
-    {id:'f2', title:'مجسم كيلر بي — Naruto', meta:'PVC عالية الجودة', price:550, img:''},
-    {id:'f3', title:'مجسم ريم الشينيغامي — Death Note', meta:'PVC عالية الجودة', price:600, img:''},
-    {id:'f4', title:'مجسم ميسا أمين — Death Note', meta:'PVC عالية الجودة', price:550, img:''},
-    {id:'f5', title:'مجسم كاكوزو — Naruto', meta:'PVC عالية الجودة', price:550, img:''},
-    {id:'f6', title:'مجسم شخصية اكاتسكي — Naruto', meta:'PVC عالية الجودة', price:550, img:''},
+    {id:'f1', title:'Straw Hat Captain — Figure', meta:'PVC · 17cm · Box', price:950, img:''},
+    {id:'f2', title:'Ninja Hero — Nendoroid Style', meta:'PVC · 10cm · Box', price:780, img:''},
+    {id:'f3', title:'Survey Corps Soldier — Figure', meta:'PVC · 18cm · Box', price:1050, img:''},
+    {id:'f4', title:'Demon Hunter — Figure', meta:'PVC · 16cm · Box', price:890, img:''},
+    {id:'f5', title:'Jujutsu Sorcerer — Figure', meta:'PVC · 19cm · Box', price:1100, img:''},
+    {id:'f6', title:'Pro Hero — Nendoroid Style', meta:'PVC · 10cm · Box', price:800, img:''},
+    {id:'f7', title:'Chainsaw Devil Hunter — Figure', meta:'PVC · 20cm · Box', price:1200, img:''},
+    {id:'f8', title:'Shinigami Detective — Figure', meta:'PVC · 17cm · Box', price:970, img:''},
   ],
   stationery: [
-    {id:'s1', title:'دفتر مدرسي انمي ديث نوت', meta:'28×20 سم · ورق A4 عالي الجودة', price:225, img:''},
-    {id:'s2', title:'دفتر مدرسي نيزوكو كامادو — Demon Slayer', meta:'50 صفحة بيضاء مسطرة', price:220, img:''},
-    {id:'s3', title:'تودو ليست ايتاشي اوتشيها — Naruto', meta:'13×8 سم · 50 صفحة', price:210, img:''},
-    {id:'s4', title:'بوك مارك ديث نوت', meta:'كرتون مقوى · تصميم عصري', price:210, img:''},
+    {id:'s1', title:'نوتة انمي مقاسات — Straw Hat', meta:'80 ورقة · غلاف مقوى', price:75, img:''},
+    {id:'s2', title:'نوتة انمي مقاسات — Survey Corps', meta:'80 ورقة · غلاف مقوى', price:75, img:''},
+    {id:'s3', title:'سيت أقلام انمي (6 قطع)', meta:'جل · ألوان متنوعة', price:90, img:''},
+    {id:'s4', title:'نوتة انمي — Demon Hunter', meta:'100 ورقة · سلك حلزوني', price:80, img:''},
+    {id:'s5', title:'قلم انمي فاخر — Shinigami Edition', meta:'حبر أسود · جسم معدني', price:60, img:''},
+    {id:'s6', title:'سيت ستيكرز + أقلام انمي', meta:'ستيكرز 20 قطعة + 3 أقلام', price:110, img:''},
   ],
   bags: [
-    {id:'b1', title:'شنطة ظهر انمي ناروتو اوزوماكي', meta:'خامة مستوردة · جيب لاب توب · 33×43 سم', price:400, img:''},
-    {id:'b2', title:'شنطة انمي ديث نوت — ريوك', meta:'خامة مستوردة · جيب لاب توب', price:400, img:''},
-    {id:'b3', title:'شنطة انمي ون بيس — لوفي', meta:'خامة مستوردة · جيب لاب توب', price:400, img:''},
-    {id:'b4', title:'شنطة ظهر تانجيرو — Demon Slayer', meta:'خامة مستوردة · جيب لاب توب', price:400, img:''},
-    {id:'b5', title:'شنطة جوجوتسو كايسن — ايتادوري وسوكونا', meta:'خامة مستوردة · جيب لاب توب', price:400, img:''},
-    {id:'b6', title:'شنطة ووتر بروف هنتر × هنتر — كيلوا زولديك', meta:'ووتر بروف · جيب لاب توب مبطن', price:450, img:''},
+    {id:'b1', title:'شنطة ظهر انمي — Straw Hat', meta:'قماش مقاوم للمية · مقاس مدرسي', price:420, img:''},
+    {id:'b2', title:'شنطة ظهر انمي — Survey Corps', meta:'قماش مقاوم للمية · مقاس مدرسي', price:420, img:''},
+    {id:'b3', title:'شنطة كتف انمي — Demon Hunter', meta:'كروس · جيب لاب توب', price:380, img:''},
+    {id:'b4', title:'شنطة ظهر انمي — Jujutsu Edition', meta:'قماش مقاوم للمية · مقاس مدرسي', price:430, img:''},
+    {id:'b5', title:'شنطة يد انمي — Chainsaw Edition', meta:'خامة جلد صناعي', price:340, img:''},
+    {id:'b6', title:'كوتشينة/بينسل باج انمي', meta:'خامة قماش · سحاب معدني', price:150, img:''},
   ]
 };
 
@@ -545,54 +549,27 @@ function findProduct(id){
 }
 
 /* ==========================================================
-   حفظ دائم للأسعار والصور
-   ----------------------------------------------------------
-   في حالة استخدام الموقع من جوه Claude (المعاينة هنا في الشات)
-   بيستخدم نظام تخزين Claude تلقائيًا، وده مش محتاج أي إعداد.
-
-   لو نقلت الملف ورفعته على استضافة أو دومين خاص بيك (برا Claude)،
-   نظام تخزين Claude مش هيشتغل هناك، فلازم تحط بيانات قاعدة بيانات
-   Firebase مجانية (بتاخد 5 دقايق بالظبط) في المتغير ده تحت:
-
-   1. افتح https://console.firebase.google.com وسجل بإيميل جوجل
-   2. اعمل مشروع جديد (Create a project)
-   3. من القائمة الجانبية: Build > Realtime Database > Create Database
-   4. اختار "Start in test mode"
-   5. هتلاقي رابط زي ده فوق: https://your-project-default-rtdb.firebaseio.com
-   6. انسخه وحطه هنا تحت بدل الفراغ، بين علامتي التنصيص:
+   حفظ دائم للأسعار والصور — بيتخزن أونلاين وبيفضل موجود
+   حتى لو المتصفح اتقفل أو الموقع اتعمله ريفريش أو زار حد تاني
    ========================================================== */
-const FIREBASE_DB_URL = 'https://mangazone-b652c-default-rtdb.firebaseio.com'; // مثال: 'https://manga-zone-xxxxx-default-rtdb.firebaseio.com'
-
 const STORAGE_KEY = 'manga-zone-products-v1';
-const hasClaudeStorage = (typeof window !== 'undefined') && !!window.storage;
-
-function applyStoredData(saved){
-  for(const catKey in saved){
-    if(!products[catKey]) continue;
-    saved[catKey].forEach(savedItem => {
-      const local = products[catKey].find(p=>p.id===savedItem.id);
-      if(local){
-        if(typeof savedItem.price === 'number') local.price = savedItem.price;
-        if(typeof savedItem.img === 'string') local.img = savedItem.img;
-      }
-    });
-  }
-}
 
 async function loadStoredProducts(){
   try{
-    if(hasClaudeStorage){
-      const result = await window.storage.get(STORAGE_KEY, true);
-      if(result && result.value) applyStoredData(JSON.parse(result.value));
-      return;
+    const result = await window.storage.get(STORAGE_KEY, true);
+    if(result && result.value){
+      const saved = JSON.parse(result.value);
+      for(const catKey in saved){
+        if(!products[catKey]) continue;
+        saved[catKey].forEach(savedItem => {
+          const local = products[catKey].find(p=>p.id===savedItem.id);
+          if(local){
+            if(typeof savedItem.price === 'number') local.price = savedItem.price;
+            if(typeof savedItem.img === 'string') local.img = savedItem.img;
+          }
+        });
+      }
     }
-    if(FIREBASE_DB_URL){
-      const res = await fetch(FIREBASE_DB_URL.replace(/\/$/,'') + '/products.json');
-      const data = await res.json();
-      if(data) applyStoredData(data);
-      return;
-    }
-    console.log('مفيش نظام تخزين متاح دلوقتي — راجع تعليمات FIREBASE_DB_URL في الكود.');
   }catch(err){
     console.log('لا يوجد بيانات محفوظة بعد، هيتم استخدام القيم الافتراضية.', err);
   }
@@ -600,22 +577,13 @@ async function loadStoredProducts(){
 
 async function saveProductsOnline(){
   try{
-    if(hasClaudeStorage){
-      const result = await window.storage.set(STORAGE_KEY, JSON.stringify(products), true);
-      return !!result;
+    const result = await window.storage.set(STORAGE_KEY, JSON.stringify(products), true);
+    if(!result){
+      alert('حصلت مشكلة في الحفظ الأونلاين، حاول تاني.');
     }
-    if(FIREBASE_DB_URL){
-      const res = await fetch(FIREBASE_DB_URL.replace(/\/$/,'') + '/products.json', {
-        method: 'PUT',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(products)
-      });
-      return res.ok;
-    }
-    return false;
   }catch(err){
     console.error('storage save error', err);
-    return false;
+    alert('حصلت مشكلة في الحفظ الأونلاين، حاول تاني.');
   }
 }
 
@@ -848,12 +816,8 @@ const pendingImages = {};
 function renderAdminBody(){
   let html = `
     <div class="admin-note">
-      عدّل السعر، ودوس على الصورة (أو زرار اختيار صورة) عشان ترفع صورة المنتج من جهازك مباشرة، وبعدين ادوس "حفظ".
-      ${hasClaudeStorage
-        ? 'التخزين شغال هنا تلقائي، والتعديل هيفضل ثابت لكل الزوار.'
-        : (FIREBASE_DB_URL
-            ? 'متصل بقاعدة بيانات Firebase — التعديل هيتحفظ لكل الزوار.'
-            : '⚠️ لسه مفيش تخزين متصل (الموقع مش شغال من جوه Claude ومفيش رابط Firebase). التعديل هيفضل بس في المتصفح ده لحد ما تضيف رابط Firebase في الكود.')}
+      عدّل السعر، ودوس على الصورة (أو زرار اختيار صورة) عشان ترفع صورة المنتج من جهازك مباشرة،
+      وبعدين ادوس "حفظ" — كل حاجة بتتخزن أونلاين فورًا وتفضل ثابتة لكل الزوار.
     </div>
   `;
   categoryMeta.forEach(cat => {
@@ -913,18 +877,9 @@ async function saveProduct(id){
   const btn = event.target;
   const oldText = btn.textContent;
   btn.textContent = 'جاري الحفظ...';
-  const ok = await saveProductsOnline();
-  if(ok){
-    btn.textContent = 'اتحفظ ✓';
-  } else {
-    btn.textContent = 'فشل الحفظ ✗';
-    if(!hasClaudeStorage && !FIREBASE_DB_URL){
-      alert('لسه مفيش نظام تخزين متصل. لو بتجرب هنا في الشات هيشتغل تلقائي، ولو رفعت الملف على استضافة خاصة لازم تضيف رابط Firebase (شوف التعليمات في الكود فوق دالة loadStoredProducts).');
-    } else {
-      alert('حصلت مشكلة في الحفظ الأونلاين، حاول تاني.');
-    }
-  }
-  setTimeout(()=>{ btn.textContent = oldText; }, 2000);
+  await saveProductsOnline();
+  btn.textContent = 'اتحفظ ✓';
+  setTimeout(()=>{ btn.textContent = oldText; }, 1500);
 }
 </script>
 </body>
