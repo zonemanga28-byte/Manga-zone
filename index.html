@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manga Zone — ستور المانجا والفيجرز</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700&family=Noto+Serif+JP:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f1ece1;
+  --paper-2:#e8e0cf;
+  --ink:#161512;
+  --ink-soft:#4a463d;
+  --indigo:#223a5e;
+  --indigo-deep:#152944;
+  --hanko:#b5292f;
+  --line:#161512;
+  --radius:2px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Tajawal',sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{
+  font-family:'Almarai',sans-serif;
+  font-weight:800;
+  letter-spacing:-0.01em;
+}
+.jp{
+  font-family:'Noto Serif JP',serif;
+  font-weight:800;
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+/* ===== NAV ===== */
+header{
+  position:sticky;top:0;z-index:50;
+  background:var(--paper);
+  border-bottom:3px solid var(--ink);
+}
+.nav-wrap{
+  max-width:1180px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;}
+.logo .sub{font-size:11px;letter-spacing:0.3em;color:var(--ink-soft);}
+nav ul{display:flex;gap:24px;list-style:none;flex-wrap:wrap;}
+nav a{font-weight:700;font-size:15px;position:relative;padding-bottom:4px;}
+nav a:hover{color:var(--hanko);}
+.cart-btn{
+  display:flex;align-items:center;gap:8px;
+  border:2px solid var(--ink);
+  padding:8px 14px;border-radius:var(--radius);
+  font-weight:700;
+  background:var(--ink);color:var(--paper);
+  transition:transform .15s ease;
+}
+.cart-btn:hover{transform:translateY(-2px);}
+.cart-count{
+  background:var(--hanko);color:#fff;
+  border-radius:50%;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  max-width:1180px;margin:0 auto;
+  padding:70px 24px 60px;
+  display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;letter-spacing:.15em;
+  color:var(--hanko);margin-bottom:18px;
+}
+.hero-eyebrow::before{content:"";width:26px;height:2px;background:var(--hanko);}
+.hero h1{
+  font-size:clamp(38px,5.5vw,64px);
+  line-height:1.05;
+  color:var(--indigo-deep);
+}
+.hero h1 span{color:var(--hanko);}
+.hero p{margin-top:20px;font-size:17px;max-width:480px;color:var(--ink-soft);}
+.hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{
+  background:var(--hanko);color:#fff;padding:14px 26px;
+  font-weight:700;border-radius:var(--radius);
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);}
+.btn-ghost{
+  border:2px solid var(--ink);padding:12px 24px;font-weight:700;border-radius:var(--radius);
+}
+.hero-visual{
+  position:relative;aspect-ratio:4/5;
+  background:linear-gradient(160deg,var(--indigo) 0%, var(--indigo-deep) 100%);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:10px 10px 0 var(--ink);
+}
+.hero-visual .stripes{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(115deg, rgba(255,255,255,.06) 0 2px, transparent 2px 22px);
+}
+
+/* ===== SECTIONS ===== */
+.section{max-width:1180px;margin:0 auto;padding:70px 24px;}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  border-bottom:3px solid var(--ink);padding-bottom:16px;margin-bottom:36px;
+}
+.section-head .num{
+  font-family:'Noto Serif JP',serif;color:var(--paper-2);
+  -webkit-text-stroke:1.5px var(--ink);
+  font-size:15px;font-weight:800;
+}
+.section-head h2{font-size:30px;color:var(--indigo-deep);}
+.section-head p{color:var(--ink-soft);font-size:14px;}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:14px;}.hero{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--paper);
+  border:2px solid var(--ink);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:5px 5px 0 var(--ink);}
+.cover{
+  aspect-ratio:3/4;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(241,236,225,.85);
+  overflow:hidden;
+}
+.cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.cover .jp{font-size:40px;position:relative;z-index:1;}
+.cover.has-img .jp{display:none;}
+.cover::after{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(241,236,225,.5) 0.6px, transparent 0.6px);
+  background-size:6px 6px;opacity:.15;
+  pointer-events:none;
+}
+.cover.has-img::after{display:none;}
+.tag{
+  position:absolute;top:10px;right:10px;
+  background:var(--hanko);color:#fff;font-size:11px;font-weight:700;
+  padding:3px 9px;border-radius:20px;z-index:2;
+}
+.card-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.card-body h3{font-size:15px;font-weight:700;color:var(--ink);}
+.card-body .meta{font-size:12px;color:var(--ink-soft);}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.price{font-weight:800;color:var(--indigo-deep);font-size:16px;}
+.add-btn{
+  border:2px solid var(--ink);padding:7px 14px;border-radius:var(--radius);
+  font-weight:700;font-size:13px;background:var(--ink);color:var(--paper);
+}
+.add-btn:hover{background:var(--hanko);border-color:var(--hanko);}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--indigo-deep);color:var(--paper);
+  margin-top:60px;
+}
+.foot-wrap{
+  max-width:1180px;margin:0 auto;padding:50px 24px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;
+}
+.foot-links{display:flex;gap:40px;flex-wrap:wrap;}
+.foot-links h4{font-size:13px;letter-spacing:.1em;margin-bottom:12px;color:#9fb0c8;}
+.foot-links a{display:block;font-size:14px;margin-bottom:8px;color:#e3e7ee;}
+.foot-bottom{
+  text-align:center;padding:16px;font-size:12px;color:#8291a8;
+  border-top:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+}
+.admin-link{font-size:12px;color:#8291a8;text-decoration:underline;opacity:.7;}
+.admin-link:hover{opacity:1;color:var(--paper);}
+
+/* ===== CART DRAWER ===== */
+.overlay{
+  position:fixed;inset:0;background:rgba(15,15,15,.55);
+  opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:90;
+}
+.overlay.show{opacity:1;pointer-events:auto;}
+.drawer{
+  position:fixed;top:0;left:0;height:100%;width:min(420px,92vw);
+  background:var(--paper);border-right:3px solid var(--ink);
+  transform:translateX(-105%);transition:transform .3s ease;
+  z-index:95;display:flex;flex-direction:column;
+}
+.drawer.open{transform:translateX(0);}
+.drawer-head{
+  padding:20px;border-bottom:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.drawer-head h3{font-size:20px;color:var(--indigo-deep);}
+.close-x{font-size:22px;font-weight:800;}
+.drawer-items{flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:14px;}
+.cart-item{
+  display:flex;gap:12px;border-bottom:1px dashed var(--ink-soft);padding-bottom:12px;
+}
+.cart-item .mini-cover{
+  width:56px;height:74px;border-radius:2px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:var(--paper);font-size:18px;
+  overflow:hidden;position:relative;
+}
+.cart-item .mini-cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.cart-item-info{flex:1;display:flex;flex-direction:column;gap:4px;}
+.cart-item-info .name{font-weight:700;font-size:14px;}
+.qty-row{display:flex;align-items:center;gap:10px;}
+.qty-btn{border:1.5px solid var(--ink);width:24px;height:24px;border-radius:50%;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.remove-link{font-size:12px;color:var(--hanko);text-decoration:underline;margin-right:auto;}
+.drawer-foot{padding:18px 20px;border-top:2px solid var(--ink);background:var(--paper-2);}
+.total-row{display:flex;justify-content:space-between;font-weight:800;font-size:17px;margin-bottom:14px;}
+.checkout-btn{
+  width:100%;background:var(--hanko);color:#fff;padding:14px;border-radius:var(--radius);
+  font-weight:800;font-size:15px;box-shadow:4px 4px 0 var(--ink);
+}
+.empty-msg{padding:40px 20px;text-align:center;color:var(--ink-soft);}
+
+/* ===== CHECKOUT MODAL ===== */
+.modal{
+  position:fixed;inset:0;z-index:120;display:none;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal.open{display:flex;}
+.modal-box{
+  background:var(--paper);border:3px solid var(--ink);border-radius:var(--radius);
+  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
+  box-shadow:8px 8px 0 var(--ink);
+}
+.modal-box.wide{max-width:720px;}
+.modal-head{padding:20px 24px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;}
+.modal-head h3{font-size:19px;color:var(--indigo-deep);}
+.modal-body{padding:22px 24px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;}
+.field input,.field textarea,.field select{
+  width:100%;border:2px solid var(--ink);border-radius:var(--radius);
+  padding:10px 12px;font-family:inherit;font-size:14px;background:#fff;
+}
+.step-btn{
+  width:100%;background:var(--indigo-deep);color:#fff;padding:13px;border-radius:var(--radius);
+  font-weight:800;margin-top:8px;
+}
+.pay-box{
+  background:var(--indigo-deep);color:var(--paper);border-radius:var(--radius);
+  padding:20px;text-align:center;margin-bottom:16px;
+}
+.pay-box .label{font-size:12px;letter-spacing:.1em;color:#9fb0c8;margin-bottom:6px;}
+.pay-box .number{font-size:26px;font-weight:800;letter-spacing:.03em;font-family:'Almarai',sans-serif;}
+.copy-btn{
+  margin-top:10px;border:1.5px solid var(--paper);padding:6px 16px;border-radius:20px;
+  font-size:12px;color:var(--paper);
+}
+.amount-line{
+  display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--ink-soft);
+  font-size:14px;
+}
+.wa-btn{
+  width:100%;background:#25D366;color:#fff;padding:14px;border-radius:var(--radius);
+  font-weight:800;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.order-note{font-size:12.5px;color:var(--ink-soft);margin-top:12px;line-height:1.7;}
+.step-dots{display:flex;gap:6px;justify-content:center;margin:14px 0 4px;}
+.step-dots span{width:7px;height:7px;border-radius:50%;background:var(--paper-2);border:1.5px solid var(--ink);}
+.step-dots span.active{background:var(--hanko);border-color:var(--hanko);}
+
+/* ===== ADMIN PANEL ===== */
+.admin-row{
+  display:grid;grid-template-columns:60px 1.4fr 1fr 1fr auto;gap:10px;align-items:center;
+  padding:10px 0;border-bottom:1px dashed var(--paper-2);
+}
+.admin-row .thumb{
+  width:48px;height:48px;border-radius:var(--radius);border:1.5px solid var(--ink);
+  object-fit:cover;background:var(--paper-2);
+}
+.admin-row .name-cell{font-size:13px;font-weight:700;}
+.admin-row input{
+  border:1.5px solid var(--ink);border-radius:var(--radius);padding:6px 8px;font-size:13px;width:100%;
+}
+.admin-save-btn{
+  font-size:12px;font-weight:700;background:var(--indigo-deep);color:#fff;
+  padding:6px 10px;border-radius:var(--radius);
+}
+.admin-cat-title{
+  font-weight:800;color:var(--indigo-deep);margin:18px 0 6px;font-size:15px;
+  border-bottom:2px solid var(--ink);padding-bottom:4px;
+}
+.admin-note{
+  background:var(--paper-2);border:1.5px dashed var(--ink);border-radius:var(--radius);
+  padding:12px 14px;font-size:12.5px;line-height:1.8;margin-bottom:16px;
+}
+.admin-lock{text-align:center;padding:30px 10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="logo" id="logoClick" title="اضغط 6 مرات لفتح لوحة التحكم">
+      <img src="logo.png" alt="Manga Zone" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--ink);">
+      <div>
+        <div style="font-weight:800;font-size:15px;">MANGA ZONE</div>
+        <div class="sub">MANGA · FIGURES</div>
+      </div>
+    </div>
+    <nav>
+      <ul id="navLinks"></ul>
+    </nav>
+    <button class="cart-btn" onclick="openCart()">
+      🛒 السلة <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">شحن لكل محافظات مصر</div>
+    <h1>مكتبتك للمانجا<br>الأصلية <span>بالإنجليزي</span></h1>
+    <p>أحدث إصدارات المانجا بالإنجليزي، فيجرز، أدوات مدرسية، وشنط بطابع الأنمي. طلبك يوصلك، والدفع سهل بفودافون كاش.</p>
+    <div class="hero-actions">
+      <a href="#manga" class="btn-primary">تصفح المانجا</a>
+      <a href="#figures" class="btn-ghost">تصفح الفيجرز</a>
+      <a href="https://t.me/+AC-Q8WRxtRw2OWVk" target="_blank" class="btn-ghost">قناتنا على تليجرام</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="stripes"></div>
+    <img src="logo.png" alt="Manga Zone logo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  </div>
+</section>
+
+<!-- كل الأقسام (مانجا/فيجرز/أدوات/شنط/أي تصنيف جديد) بتتبني هنا أوتوماتيك -->
+<div id="categorySections"></div>
+
+<footer id="contact">
+  <div class="foot-wrap">
+    <div>
+      <img src="logo.png" alt="Manga Zone" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">
+      <p style="margin-top:10px;font-size:13px;color:#c3cbd8;max-width:260px;">ستور المانجا والفيجرز الأول في مصر. توصيل لكل المحافظات.</p>
+    </div>
+    <div class="foot-links">
+      <div>
+        <h4>تواصل معنا</h4>
+        <a href="https://wa.me/201505461499" target="_blank">واتساب: 01505461499</a>
+        <a href="#">فودافون كاش: 01065402123</a>
+        <a href="https://t.me/+AC-Q8WRxtRw2OWVk" target="_blank">قناتنا على تليجرام</a>
+        <a href="https://www.instagram.com/zonemanga28/?hl=en" target="_blank">تواصل معنا عبر الإنستجرام</a>
+        <a href="https://www.facebook.com/profile.php?id=61591179914821" target="_blank">فيس بوك</a>
+      </div>
+      <div id="footCatLinks">
+        <h4>روابط</h4>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Manga Zone — جميع الحقوق محفوظة</span>
+    <span>·</span>
+    <a href="#" class="admin-link" onclick="openAdmin();return false;">لوحة التحكم</a>
+  </div>
+</footer>
+
+<!-- Cart Drawer -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3>سلة التسوق</h3>
+    <button class="close-x" onclick="closeAll()">×</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot">
+    <div class="total-row"><span>الإجمالي</span><span id="drawerTotal">0 جنيه</span></div>
+    <button class="checkout-btn" onclick="openCheckout()">إتمام الشراء</button>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle">بيانات الطلب</h3>
+      <button class="close-x" onclick="closeAll()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Admin Panel Modal -->
+<div class="modal" id="adminModal">
+  <div class="modal-box wide">
+    <div class="modal-head">
+      <h3>لوحة التحكم — الأسعار والصور</h3>
+      <button class="close-x" onclick="closeAdmin()">×</button>
+    </div>
+    <div class="modal-body" id="adminBody"></div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================
+   إعدادات المتجر — عدّل هنا لو حبيت تضيف تصنيف جديد
+   كل تصنيف عبارة عن: key (لازم يكون فريد) + عنوانه + وصفه
+   ========================================================== */
+const categoryMeta = [
+  {key:'manga',      num:'01', jp:'マンガ',   title:'المانجا',              desc:'نسخ إنجليزية أصلية، غلاف ورقي',              tag:'مانجا'},
+  {key:'figures',    num:'02', jp:'フィギュア', title:'الفيجرز',              desc:'فيجرز مرخصة، جودة عالية',                     tag:'فيجر'},
+  {key:'stationery', num:'03', jp:'文房具',    title:'نوتبوك وأقلام أنمي',   desc:'ادوات مدرسية بطابع الأنمي المفضل عندك',       tag:'أدوات'},
+  {key:'bags',       num:'04', jp:'カバン',    title:'شنط أنمي',             desc:'شنط ظهر وكتف وباجات بتصاميم أنمي',            tag:'شنط'},
+];
+
+/* ==========================================================
+   المنتجات — هنا تحدد الأسعار وتضيف صورة لكل منتج
+   img: حط رابط صورة المنتج هنا (اتركه فاضي "" لو مفيش صورة لسه)
+   price: السعر بالجنيه
+   ========================================================== */
+const products = {
+  manga: [
+    {id:'m1', title:'One Piece Vol. 1 (English)', meta:'Eiichiro Oda · Paperback', price:350.00, img:''},
+    {id:'m2', title:'Naruto Vol. 1 (English)', meta:'Masashi Kishimoto · Paperback', price:299.99, img:''},
+    {id:'m3', title:'Attack on Titan Vol. 1 (English)', meta:'Hajime Isayama · Paperback', price:199.99, img:''},
+    {id:'m4', title:'Demon Slayer Vol. 1 (English)', meta:'Koyoharu Gotouge · Paperback', price:175.00, img:''},
+    {id:'m5', title:'Jujutsu Kaisen Vol. 1 (English)', meta:'Gege Akutami · Paperback', price:280.00, img:''},
+    {id:'m6', title:'My Hero Academia Vol. 1 (English)', meta:'Kohei Horikoshi · Paperback', price:290.00, img:''},
+    {id:'m7', title:'Chainsaw Man Vol. 1 (English)', meta:'Tatsuki Fujimoto · Paperback', price:195.00, img:''},
+    {id:'m8', title:'Death Note Vol. 1 (English)', meta:'Tsugumi Ohba · Paperback', price:200.00, img:''},
+  ],
+  figures: [
+    {id:'f1', title:'Straw Hat Captain — Figure', meta:'PVC · 17cm · Box', price:950, img:''},
+    {id:'f2', title:'Ninja Hero — Nendoroid Style', meta:'PVC · 10cm · Box', price:780, img:''},
+    {id:'f3', title:'Survey Corps Soldier — Figure', meta:'PVC · 18cm · Box', price:1050, img:''},
+    {id:'f4', title:'Demon Hunter — Figure', meta:'PVC · 16cm · Box', price:890, img:''},
+    {id:'f5', title:'Jujutsu Sorcerer — Figure', meta:'PVC · 19cm · Box', price:1100, img:''},
+    {id:'f6', title:'Pro Hero — Nendoroid Style', meta:'PVC · 10cm · Box', price:800, img:''},
+    {id:'f7', title:'Chainsaw Devil Hunter — Figure', meta:'PVC · 20cm · Box', price:1200, img:''},
+    {id:'f8', title:'Shinigami Detective — Figure', meta:'PVC · 17cm · Box', price:970, img:''},
+  ],
+  stationery: [
+    {id:'s1', title:'نوتة انمي مقاسات — Straw Hat', meta:'80 ورقة · غلاف مقوى', price:75, img:''},
+    {id:'s2', title:'نوتة انمي مقاسات — Survey Corps', meta:'80 ورقة · غلاف مقوى', price:75, img:''},
+    {id:'s3', title:'سيت أقلام انمي (6 قطع)', meta:'جل · ألوان متنوعة', price:90, img:''},
+    {id:'s4', title:'نوتة انمي — Demon Hunter', meta:'100 ورقة · سلك حلزوني', price:80, img:''},
+    {id:'s5', title:'قلم انمي فاخر — Shinigami Edition', meta:'حبر أسود · جسم معدني', price:60, img:''},
+    {id:'s6', title:'سيت ستيكرز + أقلام انمي', meta:'ستيكرز 20 قطعة + 3 أقلام', price:110, img:''},
+  ],
+  bags: [
+    {id:'b1', title:'شنطة ظهر انمي — Straw Hat', meta:'قماش مقاوم للمية · مقاس مدرسي', price:420, img:''},
+    {id:'b2', title:'شنطة ظهر انمي — Survey Corps', meta:'قماش مقاوم للمية · مقاس مدرسي', price:420, img:''},
+    {id:'b3', title:'شنطة كتف انمي — Demon Hunter', meta:'كروس · جيب لاب توب', price:380, img:''},
+    {id:'b4', title:'شنطة ظهر انمي — Jujutsu Edition', meta:'قماش مقاوم للمية · مقاس مدرسي', price:430, img:''},
+    {id:'b5', title:'شنطة يد انمي — Chainsaw Edition', meta:'خامة جلد صناعي', price:340, img:''},
+    {id:'b6', title:'كوتشينة/بينسل باج انمي', meta:'خامة قماش · سحاب معدني', price:150, img:''},
+  ]
+};
+
+let cart = [];
+const gradients = [
+  'linear-gradient(150deg,#223a5e,#152944)',
+  'linear-gradient(150deg,#4a463d,#161512)',
+  'linear-gradient(150deg,#b5292f,#7c1c20)',
+  'linear-gradient(150deg,#3c5a80,#223a5e)',
+];
+function gradFor(id){
+  let sum=0; for(const c of id) sum+=c.charCodeAt(0);
+  return gradients[sum % gradients.length];
+}
+function iconFor(id){
+  if(id.startsWith('m')) return '巻';
+  if(id.startsWith('f')) return '像';
+  if(id.startsWith('s')) return '筆';
+  if(id.startsWith('b')) return '鞄';
+  return '★';
+}
+
+/* ============ بناء الأقسام والقوائم أوتوماتيك من categoryMeta ============ */
+function buildNav(){
+  const nav = document.getElementById('navLinks');
+  nav.innerHTML = categoryMeta.map(c => `<li><a href="#${c.key}">${c.title}</a></li>`).join('')
+    + `<li><a href="https://t.me/+AC-Q8WRxtRw2OWVk" target="_blank">قناتنا</a></li>
+       <li><a href="#contact">تواصل</a></li>`;
+
+  const footCat = document.getElementById('footCatLinks');
+  footCat.innerHTML = '<h4>روابط</h4>' + categoryMeta.map(c => `<a href="#${c.key}">${c.title}</a>`).join('');
+}
+
+function buildSections(){
+  const wrap = document.getElementById('categorySections');
+  wrap.innerHTML = categoryMeta.map(c => `
+    <section class="section" id="${c.key}">
+      <div class="section-head">
+        <div>
+          <div class="num">${c.num} — ${c.jp}</div>
+          <h2>${c.title}</h2>
+        </div>
+        <p>${c.desc}</p>
+      </div>
+      <div class="grid" id="grid-${c.key}"></div>
+    </section>
+  `).join('');
+
+  categoryMeta.forEach(c => renderGrid(products[c.key] || [], `grid-${c.key}`, c.tag));
+}
+
+function renderGrid(list, elId, tagLabel){
+  const el = document.getElementById(elId);
+  el.innerHTML = list.map(p => `
+    <div class="card">
+      <div class="cover ${p.img ? 'has-img' : ''}" style="background:${gradFor(p.id)}">
+        <span class="tag">${tagLabel}</span>
+        ${p.img ? `<img src="${p.img}" alt="${p.title}">` : `<span class="jp">${iconFor(p.id)}</span>`}
+      </div>
+      <div class="card-body">
+        <h3>${p.title}</h3>
+        <div class="meta">${p.meta}</div>
+        <div class="card-foot">
+          <span class="price">${p.price} جنيه</span>
+          <button class="add-btn" onclick="addToCart('${p.id}')">أضف للسلة</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function findProduct(id){
+  for(const key in products){
+    const found = products[key].find(p=>p.id===id);
+    if(found) return found;
+  }
+  return null;
+}
+
+/* ==========================================================
+   حفظ دائم للأسعار والصور — بيتخزن أونلاين وبيفضل موجود
+   حتى لو المتصفح اتقفل أو الموقع اتعمله ريفريش أو زار حد تاني
+   ========================================================== */
+const STORAGE_KEY = 'manga-zone-products-v1';
+
+async function loadStoredProducts(){
+  try{
+    const result = await window.storage.get(STORAGE_KEY, true);
+    if(result && result.value){
+      const saved = JSON.parse(result.value);
+      for(const catKey in saved){
+        if(!products[catKey]) continue;
+        saved[catKey].forEach(savedItem => {
+          const local = products[catKey].find(p=>p.id===savedItem.id);
+          if(local){
+            if(typeof savedItem.price === 'number') local.price = savedItem.price;
+            if(typeof savedItem.img === 'string') local.img = savedItem.img;
+          }
+        });
+      }
+    }
+  }catch(err){
+    console.log('لا يوجد بيانات محفوظة بعد، هيتم استخدام القيم الافتراضية.', err);
+  }
+}
+
+async function saveProductsOnline(){
+  try{
+    const result = await window.storage.set(STORAGE_KEY, JSON.stringify(products), true);
+    if(!result){
+      alert('حصلت مشكلة في الحفظ الأونلاين، حاول تاني.');
+    }
+  }catch(err){
+    console.error('storage save error', err);
+    alert('حصلت مشكلة في الحفظ الأونلاين، حاول تاني.');
+  }
+}
+
+async function initStore(){
+  await loadStoredProducts();
+  buildNav();
+  buildSections();
+  renderCart();
+}
+initStore();
+
+function addToCart(id){
+  const existing = cart.find(i=>i.id===id);
+  if(existing){ existing.qty++; }
+  else { cart.push({id, qty:1}); }
+  renderCart();
+  openCart();
+}
+function changeQty(id, delta){
+  const item = cart.find(i=>i.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty<=0) cart = cart.filter(i=>i.id!==id);
+  renderCart();
+}
+function removeItem(id){
+  cart = cart.filter(i=>i.id!==id);
+  renderCart();
+}
+function cartTotal(){
+  return cart.reduce((sum,i)=> sum + findProduct(i.id).price * i.qty, 0);
+}
+function renderCart(){
+  document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+  const wrap = document.getElementById('drawerItems');
+  if(cart.length===0){
+    wrap.innerHTML = '<div class="empty-msg">السلة فاضية لسه<br>روح ضيف حاجة حلوة 👀</div>';
+  } else {
+    wrap.innerHTML = cart.map(i=>{
+      const p = findProduct(i.id);
+      return `
+      <div class="cart-item">
+        <div class="mini-cover" style="background:${gradFor(p.id)}">
+          ${p.img ? `<img src="${p.img}" alt="${p.title}">` : iconFor(p.id)}
+        </div>
+        <div class="cart-item-info">
+          <div class="name">${p.title}</div>
+          <div class="meta" style="font-size:12px;color:var(--ink-soft)">${p.price} جنيه</div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+            <span>${i.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+            <span class="remove-link" onclick="removeItem('${p.id}')">حذف</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('drawerTotal').textContent = cartTotal() + ' جنيه';
+}
+renderCart();
+
+function openCart(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeAll(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('checkoutModal').classList.remove('open');
+  document.getElementById('adminModal').classList.remove('open');
+}
+
+const SHIPPING = 50;
+let orderInfo = {};
+let orderNumber = '';
+
+function openCheckout(){
+  if(cart.length===0) return;
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('checkoutModal').classList.add('open');
+  renderCheckoutStep1();
+}
+
+function renderCheckoutStep1(){
+  document.getElementById('modalTitle').textContent = 'بيانات التوصيل';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="step-dots"><span class="active"></span><span></span></div>
+    <div class="field">
+      <label>الاسم بالكامل</label>
+      <input type="text" id="custName" placeholder="اسمك">
+    </div>
+    <div class="field">
+      <label>رقم الموبايل</label>
+      <input type="tel" id="custPhone" placeholder="01xxxxxxxxx">
+    </div>
+    <div class="field">
+      <label>العنوان بالتفصيل</label>
+      <textarea id="custAddress" rows="3" placeholder="المحافظة، المنطقة، الشارع، رقم العمارة"></textarea>
+    </div>
+    <button class="step-btn" onclick="goToPayment()">التالي — الدفع</button>
+  `;
+}
+
+function goToPayment(){
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  if(!name || !phone || !address){
+    alert('من فضلك املأ كل البيانات الأول');
+    return;
+  }
+  orderInfo = {name, phone, address};
+  orderNumber = 'MZ-' + Math.floor(100000 + Math.random()*900000);
+  renderCheckoutStep2();
+}
+
+function renderCheckoutStep2(){
+  const total = cartTotal();
+  const grandTotal = total + SHIPPING;
+  document.getElementById('modalTitle').textContent = 'الدفع';
+  const itemsLines = cart.map(i=>{
+    const p = findProduct(i.id);
+    return `<div class="amount-line"><span>${p.title} × ${i.qty}</span><span>${p.price*i.qty} جنيه</span></div>`;
+  }).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="step-dots"><span></span><span class="active"></span></div>
+
+    ${itemsLines}
+    <div class="amount-line"><span>الشحن</span><span>${SHIPPING} جنيه</span></div>
+    <div class="amount-line" style="font-weight:800;border-bottom:none;"><span>الإجمالي</span><span>${grandTotal} جنيه</span></div>
+
+    <div class="pay-box">
+      <div class="label">حوّل المبلغ عبر فودافون كاش على رقم</div>
+      <div class="number" id="vfNumber">01065402123</div>
+      <button class="copy-btn" onclick="copyNumber()">نسخ الرقم</button>
+    </div>
+
+    <div class="order-note">
+      1. حوّل مبلغ <b>${grandTotal} جنيه</b> على رقم فودافون كاش أعلاه.<br>
+      2. بعد التحويل، دوس على زرار "تأكيد الطلب" تحت وابعتلنا صورة إيصال التحويل على واتساب.<br>
+      3. رقم طلبك: <b>${orderNumber}</b> — احتفظ بيه للمتابعة.
+    </div>
+
+    <button class="wa-btn" onclick="confirmViaWhatsapp(${grandTotal})">
+      ✅ تأكيد الطلب عبر واتساب
+    </button>
+  `;
+}
+
+function copyNumber(){
+  navigator.clipboard.writeText('01065402123');
+  const btn = event.target;
+  const old = btn.textContent;
+  btn.textContent = 'اتنسخ ✓';
+  setTimeout(()=>btn.textContent=old, 1500);
+}
+
+function confirmViaWhatsapp(total){
+  const lines = cart.map(i=>{
+    const p = findProduct(i.id);
+    return `- ${p.title} x${i.qty} (${p.price*i.qty} جنيه)`;
+  }).join('%0A');
+  const msg =
+`مرحبا، طلب جديد من Manga Zone%0A` +
+`رقم الطلب: ${orderNumber}%0A` +
+`الاسم: ${orderInfo.name}%0A` +
+`الموبايل: ${orderInfo.phone}%0A` +
+`العنوان: ${orderInfo.address}%0A%0A` +
+`المنتجات:%0A${lines}%0A%0A` +
+`الإجمالي المطلوب تحويله: ${total} جنيه%0A` +
+`تم التحويل على فودافون كاش 01065402123، وهذا إيصال التحويل مرفق.`;
+
+  window.open(`https://wa.me/201505461499?text=${msg}`, '_blank');
+  cart = [];
+  renderCart();
+  closeAll();
+}
+
+/* ==========================================================
+   لوحة التحكم — أي تعديل هنا بيتحفظ أونلاين فعليًا
+   (باستخدام نظام تخزين المتجر) وبيظهر لكل زوار الموقع،
+   وبيفضل موجود حتى لو تم عمل ريفريش أو إغلاق المتصفح.
+   ========================================================== */
+let adminUnlocked = false;
+let logoClicks = 0;
+document.getElementById('logoClick').addEventListener('click', () => {
+  logoClicks++;
+  if(logoClicks >= 6){ logoClicks = 0; openAdmin(); }
+  setTimeout(()=>{ logoClicks = 0; }, 1500);
+});
+
+function openAdmin(){
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('adminModal').classList.add('open');
+  if(!adminUnlocked){
+    renderAdminLock();
+  } else {
+    renderAdminBody();
+  }
+}
+function closeAdmin(){
+  document.getElementById('adminModal').classList.remove('open');
+}
+
+function renderAdminLock(){
+  document.getElementById('adminBody').innerHTML = `
+    <div class="admin-lock">
+      <p style="margin-bottom:14px;">لوحة التحكم محمية بكلمة سر بسيطة</p>
+      <div class="field" style="max-width:260px;margin:0 auto;">
+        <input type="password" id="adminPass" placeholder="كلمة السر">
+      </div>
+      <button class="step-btn" style="max-width:260px;margin:12px auto 0;" onclick="tryUnlock()">دخول</button>
+    </div>
+  `;
+}
+function tryUnlock(){
+  const val = document.getElementById('adminPass').value;
+  if(val === '1q2w3e4r5t6y7u8i'){
+    adminUnlocked = true;
+    renderAdminBody();
+  } else {
+    alert('كلمة السر غلط');
+  }
+}
+
+const pendingImages = {};
+
+function renderAdminBody(){
+  let html = `
+    <div class="admin-note">
+      عدّل السعر، ودوس على الصورة (أو زرار اختيار صورة) عشان ترفع صورة المنتج من جهازك مباشرة،
+      وبعدين ادوس "حفظ" — كل حاجة بتتخزن أونلاين فورًا وتفضل ثابتة لكل الزوار.
+    </div>
+  `;
+  categoryMeta.forEach(cat => {
+    html += `<div class="admin-cat-title">${cat.title}</div>`;
+    products[cat.key].forEach(p => {
+      html += `
+      <div class="admin-row">
+        <label style="cursor:pointer;" title="اضغط لاختيار صورة">
+          <img class="thumb" id="thumb-${p.id}" src="${p.img || ''}" onerror="this.style.opacity=0.2" alt="">
+          <input type="file" accept="image/*" style="display:none" onchange="handleImageSelect('${p.id}', this)">
+        </label>
+        <div class="name-cell">${p.title}</div>
+        <input type="number" id="price-${p.id}" value="${p.price}" placeholder="السعر">
+        <span style="font-size:11px;color:var(--ink-soft);">${p.img ? 'فيه صورة' : 'من غير صورة'}</span>
+        <button class="admin-save-btn" onclick="saveProduct('${p.id}')">حفظ</button>
+      </div>`;
+    });
+  });
+  document.getElementById('adminBody').innerHTML = html;
+}
+
+function handleImageSelect(id, inputEl){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      // تصغير الصورة عشان الحفظ الأونلاين يبقى أخف وأسرع
+      const maxWidth = 500;
+      const scale = Math.min(1, maxWidth / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      pendingImages[id] = dataUrl;
+      const thumb = document.getElementById('thumb-'+id);
+      if(thumb){ thumb.src = dataUrl; thumb.style.opacity = 1; }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveProduct(id){
+  const p = findProduct(id);
+  const newPrice = parseFloat(document.getElementById('price-'+id).value);
+  if(!isNaN(newPrice)) p.price = newPrice;
+  if(pendingImages[id]){
+    p.img = pendingImages[id];
+    delete pendingImages[id];
+  }
+  buildSections();
+  renderCart();
+  const btn = event.target;
+  const oldText = btn.textContent;
+  btn.textContent = 'جاري الحفظ...';
+  await saveProductsOnline();
+  btn.textContent = 'اتحفظ ✓';
+  setTimeout(()=>{ btn.textContent = oldText; }, 1500);
+}
+</script>
+</body>
+</html>
